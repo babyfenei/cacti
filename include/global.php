@@ -33,10 +33,10 @@
 /* Default database settings*/
 $database_type = "mysql";
 $database_default = "cacti";
-$database_hostname = "localhost";
-$database_username = "cactiuser";
-$database_password = "cactiuser";
-$database_port = "3306";
+$database_hostname = "$DB_HOST";
+$database_username = "$DB_USER";
+$database_password = "$DB_PASSWORD";
+$database_port = "$DB_PORT";
 $database_ssl = false;
 
 /* Default session name - Session name must contain alpha characters */

@@ -1427,7 +1427,7 @@ CREATE TABLE graph_templates_graph (
   t_auto_padding char(2) default '0',
   auto_padding char(2) default NULL,
   t_base_value char(2) default '0',
-  base_value mediumint(8) NOT NULL default '0',
+  base_value double NOT NULL default '0',
   t_grouping char(2) default '0',
   grouping char(2) NOT NULL default '',
   t_export char(2) default '0',

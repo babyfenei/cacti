@@ -27,7 +27,7 @@ ob_start();
 
 $guest_account = true;
 
-include("./include/auth.php");
+include("./include/global.php");
 include_once("./lib/rrd.php");
 
 api_plugin_hook_function('graph_image');

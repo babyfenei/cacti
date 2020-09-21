@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2016 The Cacti Group                                 |
@@ -27,7 +27,7 @@ ob_start();
 
 $guest_account = true;
 
-include("./include/auth.php");
+include("./include/global.php");
 include_once("./lib/rrd.php");
 
 /* ================= input validation ================= */
@@ -138,8 +138,11 @@ if (is_array($xport_array["meta"])) {
 }
 
 if (is_array($xport_array["data"])) {
+	$derived_time = $xport_array["meta"]["start"];
 	foreach($xport_array["data"] as $row) {
 		$data = '"' . date("Y-m-d H:i:s", $row["timestamp"]) . '"';
+		$derived_time = $derived_time + $xport_array["meta"]["step"];
+		$data = '"' . date("Y-m-d H:i:s", $derived_time) . '"';
 		for($i=1;$i<=$xport_array["meta"]["columns"];$i++) {
 			$data .= ',"' . $row["col" . $i] . '"';
 		}

@@ -133,7 +133,8 @@ function form_save() {
 		$save2["t_auto_padding"] = form_input_validate((isset($_POST["t_auto_padding"]) ? $_POST["t_auto_padding"] : ""), "t_auto_padding", "", true, 3);
 		$save2["auto_padding"] = form_input_validate((isset($_POST["auto_padding"]) ? $_POST["auto_padding"] : ""), "auto_padding", "", true, 3);
 		$save2["t_base_value"] = form_input_validate((isset($_POST["t_base_value"]) ? $_POST["t_base_value"] : ""), "t_base_value", "", true, 3);
-		$save2["base_value"] = form_input_validate($_POST["base_value"], "base_value", "^[0-9]+$", (isset($_POST["t_base_value"]) ? true : false), 3);
+		$save2["base_value"] = form_input_validate($_POST["base_value"], "base_value", "^[0-9]+([.]{1}[0-9]+){0,1}$", (isset($_POST["t_base_value"]) ? true : false), 3);
+		#$save2["base_value"] = form_input_validate($_POST["base_value"], "base_value", "^[0-9]+$", (isset($_POST["t_base_value"]) ? true : false), 3);
 		$save2["t_export"] = form_input_validate((isset($_POST["t_export"]) ? $_POST["t_export"] : ""), "t_export", "", true, 3);
 		$save2["export"] = form_input_validate((isset($_POST["export"]) ? $_POST["export"] : ""), "export", "", true, 3);
 		$save2["t_unit_value"] = form_input_validate((isset($_POST["t_unit_value"]) ? $_POST["t_unit_value"] : ""), "t_unit_value", "", true, 3);

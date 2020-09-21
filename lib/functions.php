@@ -1,4 +1,5 @@
 <?php
+setlocale(LC_CTYPE,"UTF8","en_US.UTF-8");
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2016 The Cacti Group                                 |

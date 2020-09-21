@@ -468,9 +468,15 @@ $struct_graph = array(
 	"base_value" => array(
 		"friendly_name" => "Base Value (--base)",
 		"method" => "textbox",
-		"max_length" => "50",
+		"max_length" => "500",
 		"default" => "1000",
-		"description" => "Should be set to 1024 for memory and 1000 for traffic measurements."
+		"description" => "Should be set to 1024 for memory and 1000 for traffic measurements.<br>
+			Set the traffic conversion unit by base_value. <br>
+			If base_value is set to 1000, the value remains the same.<br>
+			If base_value is set to 1008, the value indicates that charging is performed with 1 1024. That is 1024 * pow(1000, 2) / pow(1000, 3). <br>
+			If base_value is set to 1016, the value indicates that the charging is performed with 2 1024. That is (pow(1024, 2)* 1000) / pow(1000, 3). <br>
+			If base_value is set to 1065, the value indicates that charging is performed at 3 1024 * 1.126. That is (pow(1024,3)* 1.126)/ pow(1000,3). <br>
+			If base_value is set to other, it means the third power of the value. That is pow(base_value,3)/ pow(1000,3). <br>"
 		),
 	"unit_value" => array(
 		"friendly_name" => "Unit Grid Value (--unit/--y-grid)",

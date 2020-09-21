@@ -636,7 +636,7 @@ function rrdtool_function_graph($local_graph_id, $rra_id, $graph_data_array, $rr
 	}
 
 	$seconds_between_graph_updates = ($ds_step * $rra["steps"]);
-
+	
 	$graph = db_fetch_row("select
 		graph_local.id AS local_graph_id,
 		graph_local.host_id,
@@ -865,7 +865,7 @@ function rrdtool_function_graph($local_graph_id, $rra_id, $graph_data_array, $rr
 			}
 		}
 	}
-
+	
 	/* basic graph options */
 	$graph_opts .=
 		"--imgformat=" . $image_types{$graph["image_format_id"]} . RRD_NL .
@@ -1019,14 +1019,14 @@ function rrdtool_function_graph($local_graph_id, $rra_id, $graph_data_array, $rr
 				/* Nth percentile */
 				if (preg_match_all("/\|([0-9]{1,2}):(bits|bytes):(\d):(current|total|max|total_peak|all_max_current|all_max_peak|aggregate_max|aggregate_sum|aggregate_current|aggregate):(\d)?\|/", $graph_variables[$field_name][$graph_item_id], $matches, PREG_SET_ORDER)) {
 					foreach ($matches as $match) {
-						$graph_variables[$field_name][$graph_item_id] = str_replace($match[0], variable_nth_percentile($match, $graph_item, $graph_items, $graph_start, $graph_end), $graph_variables[$field_name][$graph_item_id]);
+						$graph_variables[$field_name][$graph_item_id] = str_replace($match[0], variable_nth_percentile($match, $graph, $graph_item, $graph_items, $graph_start, $graph_end), $graph_variables[$field_name][$graph_item_id]);
 					}
 				}
 
 				/* bandwidth summation */
 				if (preg_match_all("/\|sum:(\d|auto):(current|total|atomic):(\d):(\d+|auto)\|/", $graph_variables[$field_name][$graph_item_id], $matches, PREG_SET_ORDER)) {
 					foreach ($matches as $match) {
-						$graph_variables[$field_name][$graph_item_id] = str_replace($match[0], variable_bandwidth_summation($match, $graph_item, $graph_items, $graph_start, $graph_end, $rra["steps"], $ds_step), $graph_variables[$field_name][$graph_item_id]);
+						$graph_variables[$field_name][$graph_item_id] = str_replace($match[0], variable_bandwidth_summation($match, $graph, $graph_item, $graph_items, $graph_start, $graph_end, $rra["steps"], $ds_step), $graph_variables[$field_name][$graph_item_id]);
 					}
 				}
 			}
@@ -1455,6 +1455,7 @@ function rrdtool_function_graph($local_graph_id, $rra_id, $graph_data_array, $rr
 			api_plugin_hook_function('rrdtool_function_graph_set_file', array('output' => $output, 'local_graph_id' => $local_graph_id, 'rra_id' => $rra_id));
 
 			return $output;
+			return $graph;
 		}
 	}
 }
@@ -1612,7 +1613,7 @@ function rrdtool_function_xport($local_graph_id, $rra_id, $xport_data_array, &$x
 	$xport_opts =
 		"--start=" . cacti_escapeshellarg($xport_start) . RRD_NL .
 		"--end=" . cacti_escapeshellarg($xport_end) . RRD_NL .
-		"--maxrows=10000" . RRD_NL;
+		"--maxrows=100000000000000" . RRD_NL;
 
 	$xport_defs = "";
 
@@ -1725,7 +1726,7 @@ function rrdtool_function_xport($local_graph_id, $rra_id, $xport_data_array, &$x
 					foreach ($matches as $match) {
 						if ($field_name == "value") {
 							$xport_meta["NthPercentile"][$nth]["format"] = $match[0];
-							$xport_meta["NthPercentile"][$nth]["value"]  = str_replace($match[0], variable_nth_percentile($match, $xport_item, $xport_items, $graph_start, $graph_end), $xport_variables[$field_name][$xport_item_id]);
+							$xport_meta["NthPercentile"][$nth]["value"]  = str_replace($match[0], variable_nth_percentile($match, $graph, $xport_item, $xport_items, $graph_start, $graph_end), $xport_variables[$field_name][$xport_item_id]);
 							$nth++;
 						}
 					}
@@ -1736,7 +1737,7 @@ function rrdtool_function_xport($local_graph_id, $rra_id, $xport_data_array, &$x
 					foreach ($matches as $match) {
 						if ($field_name == "text_format") {
 							$xport_meta["Summation"][$sum]["format"] = $match[0];
-							$xport_meta["Summation"][$sum]["value"]  = str_replace($match[0], variable_bandwidth_summation($match, $xport_item, $xport_items, $graph_start, $graph_end, $rra["steps"], $ds_step), $xport_variables[$field_name][$xport_item_id]);
+							$xport_meta["Summation"][$sum]["value"]  = str_replace($match[0], variable_bandwidth_summation($match, $graph, $xport_item, $xport_items, $graph_start, $graph_end, $rra["steps"], $ds_step), $xport_variables[$field_name][$xport_item_id]);
 							$sum++;
 						}
 					}

@@ -210,7 +210,7 @@ $settings = array(
 			"friendly_name" => "SNMP Version",
 			"description" => "Default SNMP version for all new hosts.",
 			"method" => "drop_array",
-			"default" => "1",
+			"default" => "2",
 			"array" => $snmp_versions,
 			),
 		"snmp_community" => array(
@@ -259,7 +259,7 @@ $settings = array(
 			"friendly_name" => "SNMP Timeout",
 			"description" => "Default SNMP timeout in milli-seconds.",
 			"method" => "textbox",
-			"default" => "500",
+			"default" => "5000",
 			"max_length" => "10",
 			"size" => "5"
 			),
@@ -495,7 +495,7 @@ $settings = array(
 			"friendly_name" => "Maximum Title Length",
 			"description" => "The maximum number of characters to display for a graph title.",
 			"method" => "textbox",
-			"default" => "80",
+			"default" => "150",
 			"max_length" => "10",
 			"size" => "5"
 			),
@@ -526,7 +526,7 @@ $settings = array(
 			"friendly_name" => "Data Query Graph Rows",
 			"description" => "The maximum number Data Query rows to place on a page per Data Query.  This applies to the 'New Graphs' page.",
 			"method" => "drop_array",
-			"default" => "30",
+			"default" => "250",
 			"array" => $item_rows
 			),
 		"datasources_header" => array(
@@ -537,14 +537,14 @@ $settings = array(
 			"friendly_name" => "Rows Per Page",
 			"description" => "The number of rows to display on a single page for data sources.",
 			"method" => "drop_array",
-			"default" => "30",
+			"default" => "250",
 			"array" => $item_rows
 			),
 		"max_title_data_source" => array(
 			"friendly_name" => "Maximum Title Length",
 			"description" => "The maximum number of characters to display for a data source title.",
 			"method" => "textbox",
-			"default" => "45",
+			"default" => "150",
 			"max_length" => "10",
 			"size" => "5"
 			),

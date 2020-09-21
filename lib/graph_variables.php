@@ -22,6 +22,31 @@
  +-------------------------------------------------------------------------+
 */
 
+
+/*
+function  convert_nth($convert_base_value, $nth, &$graph){
+	global $config;
+	include_once($config["library_path"] . "/rrd.php");
+	if ($convert_base_value == 1000) {
+	}elseif ($convert_base_value == 1024) {
+			$nth /= 1.073741824;
+	}else {
+			$nth /= $convert_base_value;
+	}
+	return $nth;
+}
+
+*/
+
+/*
+通过base_value设置流量换算单位。
+如果base_value设置为1000 则值不变
+如果base_value设置为1024 则值除以3个1024再乘以3个1000即1.073741824
+如果base_value设置为其他 则值直接除以base_value。如：
+2个1024 base_value设置为1.048576
+3个1126 base_value设置为1.427628376
+*/
+
 /* nth_percentile - given a data source, calculate the Nth percentile for a given
      time period
    @arg $local_data_id - the data source to perform the Nth percentile calculation
@@ -266,9 +291,11 @@ function bandwidth_summation($local_data_id, $start_time, $end_time, $rra_steps,
    @arg $seconds_between_graph_updates - the number of seconds between each update on the graph which
      varies depending on the RRA in use
    @returns - a string containg the Nth percentile suitable for placing on the graph */
-function variable_nth_percentile(&$regexp_match_array, &$graph_item, &$graph_items, $graph_start, $graph_end) {
+function variable_nth_percentile(&$regexp_match_array, &$graph, &$graph_item, &$graph_items, $graph_start, $graph_end) {
 	global $graph_item_types;
-
+	global $config;
+	include_once($config["library_path"] . "/rrd.php");
+	
 	if (sizeof($regexp_match_array) == 0) {
 		return 0;
 	}
@@ -406,7 +433,27 @@ function variable_nth_percentile(&$regexp_match_array, &$graph_item, &$graph_ite
 	}else{
 		$round_to = 2;
 	}
-
+	
+	/*引入conversion函数。对流量结果进行换算*/
+	#$nth = convert_nth($graph['base_value'], $nth);
+	
+	if ($graph['base_value'] == 1000) {
+	}elseif ($graph['base_value'] == 1008) {
+			/* this is (1024*1000*1000)^(1/3) */
+			$nth /= 1.024;
+	}elseif ($graph['base_value'] == 1016) {
+			/* this is (1024*1024*1000)^(1/3) */
+			$nth /= 1.048576000;
+	}elseif ($graph['base_value'] == 1024) {
+			/* this is (1024*1024*1024)^(1/3) */
+			$nth /= 1.073741824;
+	}elseif ($graph['base_value'] == 1065) {
+			/* this is (1024*1024*1024*1.126)^(1/3) */
+			$nth /= 1.209033293824;
+	}else {
+			$nth /= substr_replace(pow($graph['base_value'],3), '.', 1, 0);
+	}
+	
 	/* return the final result and round off to two decimal digits */
 	return round($nth, $round_to);
 }
@@ -432,9 +479,11 @@ function variable_nth_percentile(&$regexp_match_array, &$graph_item, &$graph_ite
      averaged summation
    @arg $ds_step - how many seconds each period represents
    @returns - a string containg the bandwidth summation suitable for placing on the graph */
-function variable_bandwidth_summation(&$regexp_match_array, &$graph_item, &$graph_items, $graph_start, $graph_end, $rra_step, $ds_step) {
+function variable_bandwidth_summation(&$regexp_match_array, &$graph, &$graph_item, &$graph_items, $graph_start, $graph_end, $rra_step, $ds_step) {
 	global $graph_item_types;
-
+	global $config;
+	include_once($config["library_path"] . "/rrd.php");
+	
 	if (sizeof($regexp_match_array) == 0) {
 		return 0;
 	}
@@ -491,6 +540,25 @@ function variable_bandwidth_summation(&$regexp_match_array, &$graph_item, &$grap
 			$summation /= 1000000000000;
 		}
 	}
+	
+	#$summation = convert_nth($graph['base_value'], $summation);
+	
+	if ($graph['base_value'] == 1000) {
+        }elseif ($graph['base_value'] == 1008) {
+                        /* this is (1024*1000*1000)^(1/3) */
+                        $summation /= 1.024;
+        }elseif ($graph['base_value'] == 1016) {
+                        /* this is (1024*1024*1000)^(1/3) */
+                        $summation /= 1.048576000;
+        }elseif ($graph['base_value'] == 1024) {
+                        /* this is (1024*1024*1024)^(1/3) */
+                        $summation /= 1.073741824;
+        }elseif ($graph['base_value'] == 1065) {
+                        /* this is (1024*1024*1024*1.126)^(1/3) */
+                        $summation /= 1.209033293824;
+        }else {
+                        $summation /= substr_replace(pow($graph['base_value'],3), '.', 1, 0);
+        }	
 
 	/* determine the floating point precision */
 	if (is_numeric($regexp_match_array[3])) {
