@@ -53,12 +53,12 @@ input_validate_input_number(get_request_var("rra_id"));
 /* ==================================================== */
 
 /* override: graph start time (unix time) */
-if (!empty($_GET["graph_start"]) && is_numeric($_GET["graph_start"]) && $_GET["graph_start"] < 1600000000) {
+if (!empty($_GET["graph_start"]) && is_numeric($_GET["graph_start"]) && $_GET["graph_start"] < 16000000000) {
 	$graph_data_array["graph_start"] = get_request_var("graph_start");
 }
 
 /* override: graph end time (unix time) */
-if (!empty($_GET["graph_end"]) && is_numeric($_GET["graph_end"]) && $_GET["graph_end"] < 1600000000) {
+if (!empty($_GET["graph_end"]) && is_numeric($_GET["graph_end"]) && $_GET["graph_end"] < 16000000000) {
 	$graph_data_array["graph_end"] = get_request_var("graph_end");
 }
 

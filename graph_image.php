@@ -60,12 +60,12 @@ session_write_close();
 $graph_data_array = array();
 
 /* override: graph start time (unix time) */
-if (!empty($_GET["graph_start"]) && $_GET["graph_start"] < 1600000000) {
+if (!empty($_GET["graph_start"]) && $_GET["graph_start"] < 16000000000) {
 	$graph_data_array["graph_start"] = $_GET["graph_start"];
 }
 
 /* override: graph end time (unix time) */
-if (!empty($_GET["graph_end"]) && $_GET["graph_end"] < 1600000000) {
+if (!empty($_GET["graph_end"]) && $_GET["graph_end"] < 16000000000) {
 	$graph_data_array["graph_end"] = $_GET["graph_end"];
 }
 
