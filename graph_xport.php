@@ -145,6 +145,7 @@ if (is_array($xport_array["data"])) {
 		$data = '"' . date("Y-m-d H:i:s", $derived_time) . '"';
 		for($i=1;$i<=$xport_array["meta"]["columns"];$i++) {
 			$data .= ',"' . $row["col" . $i] . '"';
+			$data = str_replace("NaN","0",$data);
 		}
 		print $data . "\n";
 	}
